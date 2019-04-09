@@ -37,6 +37,8 @@ class Cell:
 		self.inserted = 0
 		self.notes = []
 
+		self.surface = None
+
 
 
 class Board:
@@ -176,7 +178,7 @@ def groupKey(by_num, operations):
 		while key == None:
 			op = choice(operations)
 			key = op[0](group)
-		gk.append((op[1], key))
+		gk.append([op[1], key, None])
 
 	return gk
 

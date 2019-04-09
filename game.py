@@ -9,6 +9,7 @@ class Game:
 		self.pixels = pixels
 		self.size = size
 		self.graphic_board = []
+		self.images = {}
 		self.cell_size = int(self.pixels/(self.size+1))
 
 		self.surface = pygame.display.set_mode((pixels, pixels))
@@ -28,8 +29,10 @@ class Game:
 		""" clear screen """
 		self.surface.fill((255, 255, 255))
 
+
 	def make_board(self):
 		""" make board """
+
 		# get all names of images
 		string_images = []
 		for a in ['0', '1']:
@@ -39,15 +42,24 @@ class Game:
 						string_images.append(a+b+c+d+'.png')
 
 		# get all images in pygame
-		images = {}
 		for i in string_images:
 			image = pygame.image.load(i)
-			images[i] = pygame.transform.scale(image, (self.cell_size, self.cell_size))
+			self.images[i] = pygame.transform.scale(image, (self.cell_size, self.cell_size))
 
 		for r in range(len(self.board.cells)):
 			for c in range(len(self.board.cells[r])):
 				cell = self.board.cells[r][c]
-				self.surface.blit(images[cell.graphic], (cell.c*self.cell_size+self.cell_size/2, cell.r*self.cell_size+self.cell_size/2))
+				cell.surface = self.make_cell(cell)
+				self.label_cell(cell)
+
+
+	def make_cell(self, cell):
+		""" make cell """
+		return self.surface.blit(self.images[cell.graphic], (cell.c*self.cell_size+self.cell_size/2, cell.r*self.cell_size+self.cell_size/2))
+
+	def label_cell(self, cell):
+		""" give cell operation label """
+		pass
 
 
 	def game_loop(self):
