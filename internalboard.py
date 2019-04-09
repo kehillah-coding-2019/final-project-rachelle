@@ -1,4 +1,5 @@
 
+import pygame
 from random import randint, choice
 
 def sub(l):
@@ -38,6 +39,9 @@ class Cell:
 		self.notes = []
 
 		self.surface = None
+
+	def make_cell(self, game):
+		pass
 
 
 
