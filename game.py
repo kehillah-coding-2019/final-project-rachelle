@@ -1,25 +1,25 @@
 
-import internalboard, display
+import internalboard, graphics
 import pygame
 
 class Game:
 
-	def __init__(pixels, size):
+	def __init__(self, pixels, size):
 
 		self.pixels = pixels
 		self.size = size
 
-		self.display = display.Display()
+		self.graphics = graphics.Graphics(self.size, self.pixels)
 		self.board = internalboard.Board(self.size)
 
 		self.set_up()
-
 		self.game_loop()
 
 
 	def set_up(self):
 		""" sets up the board """
-		pass
+		self.graphics.clear()
+		self.graphics.make_board(self.board)
 
 
 	def game_loop(self):

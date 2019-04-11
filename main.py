@@ -1,11 +1,10 @@
 
-import pygame, game, internalboard
+import pygame, graphics, internalboard, game
 pygame.init()
-pygame.font.init()
 
 kgame = game.Game(750, 6)
 
-pygame.font.quit()
+pygame.quit()
 
 
 # Structure
@@ -47,7 +46,5 @@ instance variables
 - surface
 - x-coord
 - y-coord
-methods
-- make a cell
 
 """
