@@ -20,6 +20,7 @@ class Game:
 		""" sets up the board """
 		self.graphics.clear()
 		self.graphics.make_board(self.board)
+		self.graphics.setup_corner_text(self.board)
 
 
 	def game_loop(self):

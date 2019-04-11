@@ -38,11 +38,7 @@ class Cell:
 		self.inserted = 0
 		self.notes = []
 
-		self.surface = None
-
-	def make_cell(self, game):
-		pass
-
+		self.rect = None
 
 
 class Board:

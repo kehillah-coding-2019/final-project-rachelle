@@ -45,7 +45,7 @@ class Graphics:
 		for r in range(len(board.cells)):
 			for c in range(len(board.cells[r])):
 				cell = board.cells[r][c]
-				cell.surface = self.make_cell(cell)
+				cell.rect = self.make_cell(cell)
 
 
 	def get_cell_x(self, cell):
@@ -60,6 +60,20 @@ class Graphics:
 		""" make cell """
 		return self.surface.blit(self.images[cell.graphic], (self.get_cell_x(cell), self.get_cell_y(cell)))
 
+
+	def setup_corner_text(self, board):
+		""" make text for a group """
+		for r in range(board.dimensions):
+			for c in range(board.dimensions):
+				group = board.group_grid[r][c]
+				if r >= 0 and board.group_grid[r-1][c] != group and c>= 0 and board.group_grid[r][c-1] != group:
+					text = self.text('arial', 28, board.group_key[group][0] + str(board.group_key[group][1]))
+					board.group_key[group][2] = self.text('arial', 28, board.group_key[group][0] + str(board.group_key[group][1]))
+					self.label_corner(text, board.cells[r][c])
+
+	def label_corner(self, text, cell):
+		""" puts text on the board corner """
+		self.insert_text(text, cell.rect.topleft)
 
 	def insert_text(self, text, coords):
 		""" blit text on screen """
