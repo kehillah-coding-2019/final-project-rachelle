@@ -61,7 +61,12 @@ class Graphics:
 		return self.surface.blit(self.images[cell.graphic], (self.get_cell_x(cell), self.get_cell_y(cell)))
 
 
-	def label_cell(self, cell):
+	def insert_text(self, text, coords):
+		""" blit text on screen """
+		self.surface.blit(text, coords)
+
+	def text(self, fontname, size, text, bold=False, italic=False):
 		""" give cell operation label """
-		# return pygame.font.Font.render(' '.join(self.board.group_key[cell.r][cell.c]))
+		thefont = pygame.font.SysFont(fontname, size)
+		return thefont.render(text, True, (0, 0, 0))
 
