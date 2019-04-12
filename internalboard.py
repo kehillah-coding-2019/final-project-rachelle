@@ -43,7 +43,7 @@ class Cell:
 
 class Board:
 
-	def __init__(self, dimensions, operations=[(sum, '+'), (sub, '-'), (mult, 'x'), (div, '/')]):
+	def __init__(self, dimensions, operations=[(sum, '+'), (sub, '-'), (mult, 'x'), (div, '÷')]):
 		""" example: Board(9) """
 
 		self.dimensions = dimensions
@@ -52,8 +52,14 @@ class Board:
 		self.number_grid = numGrid(self.dimensions)
 		func = groupGrid(self.number_grid)
 		self.group_grid = func[0]
-		by_num = func[1]
-		self.group_key = groupKey(by_num, operations)
+		self.by_num = func[1]
+		self.in_group = func[2]
+		self.group_key = groupKey(self.by_num, operations)
+
+		self.tops = []
+		for l in self.in_group:
+			self.tops.append(l[0])
+		print(self.tops)
 
 		self.cells = []
 		for r in range(dimensions):
@@ -137,6 +143,7 @@ def groupGrid(number_grid):
 			group_grid[i].append('x')
 
 	by_num = []
+	in_group = []
 	num = -1
 	for r in range(dimensions):
 		for c in range(dimensions):
@@ -144,12 +151,14 @@ def groupGrid(number_grid):
 			if group_grid[r][c] == 'x':
 
 				num += 1
+				in_group.append([])
 				by_num.append([])
 				R = r
 				C = c
 
 				for i in range(4):
 					group_grid[R][C] = num
+					in_group[num].append((R, C))
 					by_num[num].append(number_grid[R][C])
 					options = getOptions(R, C, group_grid)
 					if [] != options:
@@ -165,7 +174,7 @@ def groupGrid(number_grid):
 					else:
 						break
 
-	return group_grid, by_num
+	return group_grid, by_num, in_group
 
 
 def groupKey(by_num, operations):

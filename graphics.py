@@ -10,6 +10,9 @@ class Graphics:
 		self.pixels = pixels
 
 		self.cell_size = int(self.pixels/(self.size+1))
+		self.label_size = int(self.cell_size/3)
+		print(self.label_size)
+
 		self.images = self.get_images()
 
 		self.surface = pygame.display.set_mode((self.pixels, self.pixels))
@@ -66,14 +69,18 @@ class Graphics:
 		for r in range(board.dimensions):
 			for c in range(board.dimensions):
 				group = board.group_grid[r][c]
-				if r >= 0 and board.group_grid[r-1][c] != group and c>= 0 and board.group_grid[r][c-1] != group:
-					text = self.text('arial', 28, board.group_key[group][0] + str(board.group_key[group][1]))
-					board.group_key[group][2] = self.text('arial', 28, board.group_key[group][0] + str(board.group_key[group][1]))
+				if (r, c) in board.tops:
+					if len(board.by_num[group]) != 1:
+						text = self.text('arial', self.label_size, str(board.group_key[group][1]) + board.group_key[group][0])
+					else:
+						text = self.text('arial', self.label_size, str(board.group_key[group][1]))
+					board.group_key[group][2] = text
 					self.label_corner(text, board.cells[r][c])
+
 
 	def label_corner(self, text, cell):
 		""" puts text on the board corner """
-		self.insert_text(text, cell.rect.topleft)
+		self.insert_text(text, (cell.rect.left+self.cell_size/14, cell.rect.top+self.cell_size/14))
 
 	def insert_text(self, text, coords):
 		""" blit text on screen """
