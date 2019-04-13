@@ -59,7 +59,6 @@ class Board:
 		self.tops = []
 		for l in self.in_group:
 			self.tops.append(l[0])
-		print(self.tops)
 
 		self.cells = []
 		for r in range(dimensions):
