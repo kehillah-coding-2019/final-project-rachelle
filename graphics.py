@@ -20,18 +20,19 @@ class Graphics:
 
 	def unselect(self, cell):
 		""" redraw the cell with a white background """
-		pass
-
+		pygame.draw.rect(self.surface, (255, 255, 255), cell.rect)
+		self.draw_cell(cell)
 
 	def select(self, cell):
 		""" redraw the cell with a grey background """
-		pass
-
+		pygame.draw.rect(self.surface, (215, 215, 215), cell.rect)
+		self.draw_cell(cell)
 
 	def draw_cell(self, cell):
 		""" draw the cell """
-		pass
-		
+		self.make_cell(cell)
+		self.label_corner(cell)
+
 
 	def get_images(self):
 		""" make a dictionary of images with their names and their scaled versions on python """
@@ -84,21 +85,22 @@ class Graphics:
 			for c in range(board.dimensions):
 				group = board.group_grid[r][c]
 				if (r, c) in board.tops:
+					cell = board.cells[r][c]
 					if len(board.by_num[group]) != 1:
-						text = self.text('arial', self.label_size, str(board.group_key[group][1]) + board.group_key[group][0])
+						cell.label = self.text('arial', self.label_size, str(board.group_key[group][1]) + board.group_key[group][0])
 					else:
-						text = self.text('arial', self.label_size, str(board.group_key[group][1]))
-					board.group_key[group][2] = text
-					self.label_corner(text, board.cells[r][c])
+						cell.label = self.text('arial', self.label_size, str(board.group_key[group][1]))
+					board.group_key[group][2] = cell.label
+					self.label_corner(cell)
 
 
-	def label_corner(self, text, cell):
+	def label_corner(self, cell):
 		""" puts text on the board corner """
-		self.insert_text(text, (cell.rect.left+self.cell_size/14, cell.rect.top+self.cell_size/14))
+		return self.insert_text(cell.label, (cell.rect.left+self.cell_size/14, cell.rect.top+self.cell_size/14))
 
 	def insert_text(self, text, coords):
 		""" blit text on screen """
-		self.surface.blit(text, coords)
+		return self.surface.blit(text, coords)
 
 	def text(self, fontname, size, text, bold=False, italic=False):
 		""" give cell operation label """

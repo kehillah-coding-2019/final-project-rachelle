@@ -39,6 +39,7 @@ class Cell:
 		self.notes = []
 
 		self.rect = None
+		self.label = None
 
 
 class Board:
@@ -47,7 +48,6 @@ class Board:
 		""" example: Board(9) """
 
 		self.dimensions = dimensions
-		self.selected = (0, 0)
 
 		self.number_grid = numGrid(self.dimensions)
 		func = groupGrid(self.number_grid)
@@ -65,11 +65,6 @@ class Board:
 			self.cells.append([])
 			for c in range(dimensions):
 				self.cells[r].append(Cell((r, c), self.number_grid[r][c], self.group_grid[r][c], get_graphic(r, c, self.group_grid)))
-
-	
-	def select(r, c):
-		""" select a cell """
-		self.selected = (r, c)
 
 
 

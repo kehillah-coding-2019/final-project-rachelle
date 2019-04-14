@@ -12,7 +12,7 @@ class Game:
 		self.graphics = graphics.Graphics(self.size, self.pixels)
 		self.board = internalboard.Board(self.size)
 
-		self.select = False # will be a Cell
+		self.selected = None # will be a Cell
 
 		self.set_up()
 		self.game_loop()
@@ -23,14 +23,15 @@ class Game:
 		self.graphics.clear()
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
+		self.select(0, 0)
 
 
 	def select(self, r, c):
 		surfaces = []
-		if not self.select:
-			surfaces.append(self.graphics.unselect(self.select))
-		self.select = self.board.cell[r, c]
-		surfaces.append(self.graphics.select(self.select))
+		if self.selected != None:
+			surfaces.append(self.graphics.unselect(self.selected))
+		self.selected = self.board.cells[r][c]
+		surfaces.append(self.graphics.select(self.selected))
 		return surfaces
 
 
@@ -46,4 +47,3 @@ class Game:
 
 			pygame.display.update()
 
-			
