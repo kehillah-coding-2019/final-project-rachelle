@@ -31,6 +31,7 @@ class Game:
 
 
 	def select(self, r, c):
+		""" select """
 		surfaces = []
 		if self.selectedr != None:
 			cell = self.board.cells[self.selectedr][self.selectedc]
@@ -40,6 +41,16 @@ class Game:
 		cell = self.board.cells[r][c]
 		surfaces.append(self.graphics.select(cell))
 		return surfaces
+
+	def unselect(self):
+		""" unselect """
+		surface = None
+		if self.selectedr != None:
+			cell = self.board.cells[self.selectedr][self.selectedc]
+			surface = self.graphics.unselect(cell)
+		self.selectedr = None
+		self.selectedc = None
+		return surface
 
 
 	def game_loop(self):
@@ -56,29 +67,34 @@ class Game:
 					exit = True
 
 				# keyboard arrows to select
-				if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
-					if self.selectedc+1 < self.size:
-						rects.extend(self.select(self.selectedr, self.selectedc+1))
-				if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
-					if self.selectedc > 0:
-						rects.extend(self.select(self.selectedr, self.selectedc-1))
-				if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
-					if self.selectedr > 0:
-						rects.extend(self.select(self.selectedr-1, self.selectedc))
-				if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
-					if self.selectedr+1 < self.size:
-						rects.extend(self.select(self.selectedr+1, self.selectedc))
+				if self.selectedr != None:
+					if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
+						if self.selectedc+1 < self.size:
+							rects.extend(self.select(self.selectedr, self.selectedc+1))
+					if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
+						if self.selectedc > 0:
+							rects.extend(self.select(self.selectedr, self.selectedc-1))
+					if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
+						if self.selectedr > 0:
+							rects.extend(self.select(self.selectedr-1, self.selectedc))
+					if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
+						if self.selectedr+1 < self.size:
+							rects.extend(self.select(self.selectedr+1, self.selectedc))
 
 				# clicking to select
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					done = False
 					for r in range(self.size):
 						for c in range(self.size):
 							if self.board.cells[r][c].rect.collidepoint(event.pos[0], event.pos[1]):
+								done = True
 								rects.extend(self.select(r, c))
 								break
+					if not done:
+						rects.append(self.unselect())
 
-			
 			self.clock.tick(40)
 			if rects != []:
+				print()
 				pygame.display.update(rects)
 
