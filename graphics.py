@@ -11,8 +11,11 @@ class Graphics:
 
 		self.cell_size = int(self.pixels/(self.size+1))
 		self.label_size = int(self.cell_size/3)
+		self.num_size = int(self.cell_size/1.2)
+		self.note_size = int(self.cell_size/5)
 
 		self.images = self.get_images()
+		self.numbers = self.get_numText()
 
 		self.surface = pygame.display.set_mode((self.pixels, self.pixels))
 		pygame.display.set_caption('Ken Ken')
@@ -36,6 +39,27 @@ class Graphics:
 		if cell.label != None:
 			self.label_corner(cell)
 
+	def clear_cell(self, cell):
+		""" draw white background, cell, and label without numbers """
+		pygame.draw.rect(self.surface, (255, 255, 255), cell.rect)
+		self.draw_cell(cell)
+		return cell.rect
+
+
+	def insert_num(self, num, cell):
+		""" insert a number into a cell """
+		text = self.numbers['num'][num-1]
+		return self.insert_text(text, ((cell.rect.width/2-text.get_rect().width/2)+cell.rect.x, (cell.rect.height/2-text.get_rect().height/2.6)+cell.rect.y))
+
+
+	def get_numText(self):
+		""" make a dictionary of numbers """
+		numbers = {'num': [], 'note': []}
+		for n in range(1, self.size+1):
+			numbers['num'].append(self.text('arial', self.num_size, str(n)))
+		for n in range(1, self.size+1):
+			numbers['note'].append(self.text('arial', self.note_size, str(n)))
+		return numbers
 
 	def get_images(self):
 		""" make a dictionary of images with their names and their scaled versions on python """

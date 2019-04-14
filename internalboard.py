@@ -66,6 +66,12 @@ class Board:
 			for c in range(dimensions):
 				self.cells[r].append(Cell((r, c), self.number_grid[r][c], self.group_grid[r][c], get_graphic(r, c, self.group_grid)))
 
+		self.input = []
+		for row in range(self.dimensions):
+			self.input.append([])
+			for column in range(self.dimensions):
+				self.input[row].append('x')
+
 
 
 def numGrid(dimensions):
@@ -154,7 +160,10 @@ def groupGrid(number_grid):
 					group_grid[R][C] = num
 					in_group[num].append((R, C))
 					by_num[num].append(number_grid[R][C])
-					options = getOptions(R, C, group_grid)
+					#options = getOptions(R, C, group_grid)
+					options = []
+					for coords in in_group[num]:
+						options.extend(getOptions(coords[0], coords[1], group_grid))
 					if [] != options:
 						coords = choice(options)
 						R = coords[0]
@@ -163,7 +172,7 @@ def groupGrid(number_grid):
 							if randint(0, 5) == 0:
 								break
 						elif i == 2:
-							if randint(0, 20) != 0:
+							if randint(0, 5) != 0:
 								break
 					else:
 						break

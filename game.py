@@ -2,9 +2,17 @@
 import internalboard, graphics
 import pygame
 
+class InvalidDimensions(Exception):
+	""" an error for dimensions that are too big or small """
+	pass
+
+
 class Game:
 
 	def __init__(self, pixels, size):
+
+		if size > 9:
+			raise InvalidDimensions
 
 		self.pixels = pixels
 		self.size = size
@@ -27,6 +35,7 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
+		self.insert_num(5, self.board.cells[0][0])
 		pygame.display.update()
 
 
@@ -53,11 +62,19 @@ class Game:
 		return surface
 
 
+	def insert_num(self, num, cell):
+		""" insert a num """
+		cell.inserted = num
+		self.board.input[cell.r][cell.c] = num
+		return self.graphics.insert_num(num, cell)
+
+
 	def game_loop(self):
 		""" goes through each event and does stuff """
 		exit = False
 		while not exit:
 			rects = []
+			# event loop
 			for event in pygame.event.get():
 
 				# quit
@@ -95,6 +112,6 @@ class Game:
 
 			self.clock.tick(40)
 			if rects != []:
-				print()
+				print() # the only way the program will run fast
 				pygame.display.update(rects)
 
