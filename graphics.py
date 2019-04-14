@@ -38,6 +38,8 @@ class Graphics:
 		self.make_cell(cell)
 		if cell.label != None:
 			self.label_corner(cell)
+		if cell.inserted != 0:
+			self.insert_num(cell.inserted, cell)
 
 	def clear_cell(self, cell):
 		""" draw white background, cell, and label without numbers """

@@ -23,6 +23,8 @@ class Game:
 		self.selectedr = None
 		self.selectedc = None
 
+		self.keys = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
+
 		self.clock = pygame.time.Clock()
 
 		self.set_up()
@@ -35,7 +37,6 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
-		self.insert_num(5, self.board.cells[0][0])
 		pygame.display.update()
 
 
@@ -109,6 +110,10 @@ class Game:
 								break
 					if not done:
 						rects.append(self.unselect())
+
+				# insert number
+				if event.type == pygame.KEYDOWN and event.key in self.keys:
+					rects.append(self.insert_num(self.keys[event.key], self.board.cells[self.selectedr][self.selectedc]))
 
 			self.clock.tick(40)
 			if rects != []:
