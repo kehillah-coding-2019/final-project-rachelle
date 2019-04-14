@@ -38,6 +38,7 @@ class Cell:
 		self.inserted = 0
 		self.notes = []
 
+		self.color = (255, 255, 255)
 		self.rect = None
 		self.label = None
 
@@ -169,10 +170,10 @@ def groupGrid(number_grid):
 						R = coords[0]
 						C = coords[1]
 						if i == 1:
-							if randint(0, 5) == 0:
+							if randint(0, 4) == 0:
 								break
 						elif i == 2:
-							if randint(0, 5) != 0:
+							if randint(0, 10) != 0:
 								break
 					else:
 						break

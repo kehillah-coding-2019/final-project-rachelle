@@ -45,19 +45,22 @@ class Game:
 		surfaces = []
 		if self.selectedr != None:
 			cell = self.board.cells[self.selectedr][self.selectedc]
-			surfaces.append(self.graphics.unselect(cell))
+			cell.color = (255, 255, 255)
+			surfaces.append(self.graphics.update_cell(cell))
 		self.selectedr = r
 		self.selectedc = c
 		cell = self.board.cells[r][c]
-		surfaces.append(self.graphics.select(cell))
+		cell.color = (215, 215, 215)
+		surfaces.append(self.graphics.update_cell(cell))
 		return surfaces
 
 	def unselect(self):
 		""" unselect """
 		surface = None
 		if self.selectedr != None:
+			cell.color = (255, 255, 255)
 			cell = self.board.cells[self.selectedr][self.selectedc]
-			surface = self.graphics.unselect(cell)
+			surface = self.graphics.update_cell(cell)
 		self.selectedr = None
 		self.selectedc = None
 		return surface
@@ -68,6 +71,12 @@ class Game:
 		cell.inserted = num
 		self.board.input[cell.r][cell.c] = num
 		return self.graphics.insert_num(num, cell)
+
+	def del_num(self, cell):
+		""" delete a number """
+		cell.inserted = 0
+		self.board.input[cell.r][cell.c] = 'x'
+		return self.graphics.update_cell(cell)
 
 
 	def game_loop(self):
@@ -111,9 +120,11 @@ class Game:
 					if not done:
 						rects.append(self.unselect())
 
-				# insert number
+				# insert/delete number
 				if event.type == pygame.KEYDOWN and event.key in self.keys:
 					rects.append(self.insert_num(self.keys[event.key], self.board.cells[self.selectedr][self.selectedc]))
+				if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
+					rects.append(self.del_num(self.board.cells[self.selectedr][self.selectedc]))
 
 			self.clock.tick(40)
 			if rects != []:

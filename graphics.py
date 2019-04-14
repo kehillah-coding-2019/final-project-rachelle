@@ -21,15 +21,9 @@ class Graphics:
 		pygame.display.set_caption('Ken Ken')
 
 
-	def unselect(self, cell):
-		""" redraw the cell with a white background """
-		pygame.draw.rect(self.surface, (255, 255, 255), cell.rect)
-		self.draw_cell(cell)
-		return cell.rect
-
-	def select(self, cell):
-		""" redraw the cell with a grey background """
-		pygame.draw.rect(self.surface, (215, 215, 215), cell.rect)
+	def update_cell(self, cell):
+		""" update the cell bg color """
+		pygame.draw.rect(self.surface, cell.color, cell.rect)
 		self.draw_cell(cell)
 		return cell.rect
 
@@ -40,12 +34,6 @@ class Graphics:
 			self.label_corner(cell)
 		if cell.inserted != 0:
 			self.insert_num(cell.inserted, cell)
-
-	def clear_cell(self, cell):
-		""" draw white background, cell, and label without numbers """
-		pygame.draw.rect(self.surface, (255, 255, 255), cell.rect)
-		self.draw_cell(cell)
-		return cell.rect
 
 
 	def insert_num(self, num, cell):
