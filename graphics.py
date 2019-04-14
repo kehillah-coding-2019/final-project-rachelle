@@ -31,7 +31,8 @@ class Graphics:
 	def draw_cell(self, cell):
 		""" draw the cell """
 		self.make_cell(cell)
-		self.label_corner(cell)
+		if cell.label != None:
+			self.label_corner(cell)
 
 
 	def get_images(self):

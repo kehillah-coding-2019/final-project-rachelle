@@ -2,7 +2,7 @@
 import pygame, graphics, internalboard, game
 pygame.init()
 
-kgame = game.Game(800, 6)
+kgame = game.Game(800, 15)
 
 pygame.quit()
 
