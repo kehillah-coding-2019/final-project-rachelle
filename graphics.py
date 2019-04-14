@@ -11,13 +11,27 @@ class Graphics:
 
 		self.cell_size = int(self.pixels/(self.size+1))
 		self.label_size = int(self.cell_size/3)
-		print(self.label_size)
 
 		self.images = self.get_images()
 
 		self.surface = pygame.display.set_mode((self.pixels, self.pixels))
 		pygame.display.set_caption('Ken Ken')
 
+
+	def unselect(self, cell):
+		""" redraw the cell with a white background """
+		pass
+
+
+	def select(self, cell):
+		""" redraw the cell with a grey background """
+		pass
+
+
+	def draw_cell(self, cell):
+		""" draw the cell """
+		pass
+		
 
 	def get_images(self):
 		""" make a dictionary of images with their names and their scaled versions on python """
