@@ -15,6 +15,8 @@ class Game:
 		self.selectedr = None
 		self.selectedc = None
 
+		self.clock = pygame.time.Clock()
+
 		self.set_up()
 		self.game_loop()
 
@@ -25,6 +27,7 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
+		pygame.display.update()
 
 
 	def select(self, r, c):
@@ -43,6 +46,7 @@ class Game:
 		""" goes through each event and does stuff """
 		exit = False
 		while not exit:
+			rects = []
 			for event in pygame.event.get():
 
 				# quit
@@ -51,19 +55,30 @@ class Game:
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					exit = True
 
-				# keyboard arrows
+				# keyboard arrows to select
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_RIGHT:
 					if self.selectedc+1 < self.size:
-						self.select(self.selectedr, self.selectedc+1)
+						rects.extend(self.select(self.selectedr, self.selectedc+1))
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_LEFT:
 					if self.selectedc > 0:
-						self.select(self.selectedr, self.selectedc-1)
+						rects.extend(self.select(self.selectedr, self.selectedc-1))
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_UP:
 					if self.selectedr > 0:
-						self.select(self.selectedr-1, self.selectedc)
+						rects.extend(self.select(self.selectedr-1, self.selectedc))
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_DOWN:
 					if self.selectedr+1 < self.size:
-						self.select(self.selectedr+1, self.selectedc)
+						rects.extend(self.select(self.selectedr+1, self.selectedc))
 
-			pygame.display.update()
+				# clicking to select
+				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+					for r in range(self.size):
+						for c in range(self.size):
+							if self.board.cells[r][c].rect.collidepoint(event.pos[0], event.pos[1]):
+								rects.extend(self.select(r, c))
+								break
+
+			
+			self.clock.tick(40)
+			if rects != []:
+				pygame.display.update(rects)
 

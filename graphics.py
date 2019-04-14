@@ -22,11 +22,13 @@ class Graphics:
 		""" redraw the cell with a white background """
 		pygame.draw.rect(self.surface, (255, 255, 255), cell.rect)
 		self.draw_cell(cell)
+		return cell.rect
 
 	def select(self, cell):
 		""" redraw the cell with a grey background """
 		pygame.draw.rect(self.surface, (215, 215, 215), cell.rect)
 		self.draw_cell(cell)
+		return cell.rect
 
 	def draw_cell(self, cell):
 		""" draw the cell """
