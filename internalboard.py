@@ -170,10 +170,10 @@ def groupGrid(number_grid):
 						R = coords[0]
 						C = coords[1]
 						if i == 1:
-							if randint(0, 4) == 0:
+							if randint(0, 1) == 0:
 								break
 						elif i == 2:
-							if randint(0, 10) != 0:
+							if randint(0, 15) != 0:
 								break
 					else:
 						break

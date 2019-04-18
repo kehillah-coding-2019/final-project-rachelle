@@ -1,6 +1,7 @@
 
 import pygame
 import internalboard
+import math
 
 class Graphics:
 
@@ -34,6 +35,8 @@ class Graphics:
 			self.label_corner(cell)
 		if cell.inserted != 0:
 			self.insert_num(cell.inserted, cell)
+		if cell.notes != []:
+			self.insert_notes(cell)
 
 
 	def insert_num(self, num, cell):
@@ -41,6 +44,56 @@ class Graphics:
 		text = self.numbers['num'][num-1]
 		return self.insert_text(text, ((cell.rect.width/2-text.get_rect().width/2)+cell.rect.x, (cell.rect.height/2-text.get_rect().height/2.6)+cell.rect.y))
 
+	def insert_notes(self, cell):
+		""" inserts notes """
+
+		# arrange data for formatting
+		rows = [] # ex. [{1: [-2, -1] 4: [0, -1], 5: [2, -1]}, {6: [-1, 1], 8: [1, 1]}]
+		for i in range(len(cell.notes)):
+			if i % 3 == 0:
+				rows.append({})
+			rows[-1][cell.notes[i]] = []
+
+		# get columns
+		columncoords = []
+		for row in rows:
+			i = -1
+			for note in row:
+				i += 1
+				if i == 0:
+					if len(row) == 1:
+						row[note].append(0)
+					elif len(row) == 2:
+						row[note].append(-1)
+					elif len(row) == 3:
+						row[note].append(-2)
+				elif i == 1:
+					if len(row) == 2:
+						row[note].append(1)
+					elif len(row) == 3:
+						row[note].append(0)
+				elif i == 2:
+					row[note].append(2)
+
+
+		# get rows
+		for r in range(len(rows)):
+			if r == 0:
+				for note in rows[r]:
+					rows[r][note].append(-1*(len(rows)-1))
+			elif r == 1:
+				if len(rows) == 2:
+					for note in rows[r]:
+						rows[r][note].append(1)
+				elif len(rows) == 3:
+					for note in rows[r]:
+						rows[r][note].append(0)
+			elif r == 2:
+				for note in rows[r]:
+					rows[r][note].append(2)
+
+		print(rows)
+		
 
 	def get_numText(self):
 		""" make a dictionary of numbers """

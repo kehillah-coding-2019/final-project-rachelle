@@ -3,7 +3,7 @@ import internalboard, graphics
 import pygame
 
 class InvalidDimensions(Exception):
-	""" an error for dimensions that are too big or small """
+	""" an error for dimensions that are too big """
 	pass
 
 
@@ -37,8 +37,18 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
-		pygame.display.update()
 
+		self.add_note(self.board.cells[0][1], 4)
+		self.add_note(self.board.cells[0][1], 5)
+		self.add_note(self.board.cells[0][1], 3)
+		self.add_note(self.board.cells[0][1], 1)
+		self.add_note(self.board.cells[0][1], 2)
+		self.add_note(self.board.cells[0][1], 6)
+		self.add_note(self.board.cells[0][1], 7)
+		self.add_note(self.board.cells[0][1], 9)
+		self.add_note(self.board.cells[0][1], 8)
+		
+		pygame.display.update()
 
 	def select(self, r, c):
 		""" select """
@@ -58,8 +68,8 @@ class Game:
 		""" unselect """
 		surface = None
 		if self.selectedr != None:
-			cell.color = (255, 255, 255)
 			cell = self.board.cells[self.selectedr][self.selectedc]
+			cell.color = (255, 255, 255)
 			surface = self.graphics.update_cell(cell)
 		self.selectedr = None
 		self.selectedc = None
@@ -70,13 +80,28 @@ class Game:
 		""" insert a num """
 		cell.inserted = num
 		self.board.input[cell.r][cell.c] = num
-		return self.graphics.insert_num(num, cell)
+		return self.graphics.update_cell(cell)
 
 	def del_num(self, cell):
 		""" delete a number """
 		cell.inserted = 0
 		self.board.input[cell.r][cell.c] = 'x'
 		return self.graphics.update_cell(cell)
+
+
+	def add_note(self, cell, num):
+		""" add a note """
+		cell.notes.append(num)
+		cell.notes.sort()
+		return self.graphics.update_cell(cell)
+
+	def del_note(self, cell, num):
+		""" delete a note """
+		pass
+
+	def clear_notes(self, cell, num):
+		""" clear a note """
+		pass
 
 
 	def game_loop(self):
@@ -90,7 +115,7 @@ class Game:
 				# quit
 				if event.type == pygame.QUIT:
 					exit = True
-				if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+				elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					exit = True
 
 				# keyboard arrows to select
@@ -121,13 +146,17 @@ class Game:
 						rects.append(self.unselect())
 
 				# insert/delete number
-				if event.type == pygame.KEYDOWN and event.key in self.keys:
-					rects.append(self.insert_num(self.keys[event.key], self.board.cells[self.selectedr][self.selectedc]))
+				if event.type == pygame.KEYDOWN and event.key in self.keys and self.keys[event.key] <= self.size:
+					if self.board.cells[self.selectedr][self.selectedc].inserted != self.keys[event.key]:
+						rects.append(self.insert_num(self.keys[event.key], self.board.cells[self.selectedr][self.selectedc]))
+					else:
+						rects.append(self.del_num(self.board.cells[self.selectedr][self.selectedc]))
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
 					rects.append(self.del_num(self.board.cells[self.selectedr][self.selectedc]))
 
 			self.clock.tick(40)
+
 			if rects != []:
-				print() # the only way the program will run fast
+				#print() # the only way the program will run fast
 				pygame.display.update(rects)
 
