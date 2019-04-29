@@ -38,15 +38,10 @@ class Game:
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
 
-		self.add_note(self.board.cells[0][1], 4)
 		self.add_note(self.board.cells[0][1], 5)
 		self.add_note(self.board.cells[0][1], 3)
-		self.add_note(self.board.cells[0][1], 1)
 		self.add_note(self.board.cells[0][1], 2)
 		self.add_note(self.board.cells[0][1], 6)
-		self.add_note(self.board.cells[0][1], 7)
-		self.add_note(self.board.cells[0][1], 9)
-		self.add_note(self.board.cells[0][1], 8)
 		
 		pygame.display.update()
 
