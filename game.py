@@ -93,9 +93,10 @@ class Game:
 		cell.notes.remove(num)
 		return self.graphics.update_cell(cell)
 
-	def clear_notes(self, cell, num):
+	def clear_notes(self, cell):
 		""" clear a note """
-		pass
+		cell.notes = []
+		return self.graphics.update_cell(cell)
 
 
 	def game_loop(self):
@@ -157,7 +158,11 @@ class Game:
 							rects.append(self.del_num(self.selected_cell))
 
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
-					rects.append(self.del_num(self.selected_cell))
+					if self.selected_cell.inserted == 0:
+						rects.append(self.clear_notes(self.selected_cell))
+					else:
+						rects.append(self.del_num(self.selected_cell))
+					print(self.selected_cell.notes)
 
 			self.clock.tick(40)
 

@@ -39,7 +39,7 @@ class Graphics:
 			self.label_corner(cell)
 		if cell.inserted != 0:
 			self.insert_num(cell.inserted, cell)
-		if cell.notes != []:
+		elif cell.notes != []:
 			self.insert_notes(cell)
 
 
