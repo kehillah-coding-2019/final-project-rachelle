@@ -22,6 +22,7 @@ class Game:
 
 		self.selectedr = None
 		self.selectedc = None
+		self.selected_cell = None
 
 		self.keys = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
 
@@ -41,7 +42,7 @@ class Game:
 		self.add_note(self.board.cells[0][1], 5)
 		self.add_note(self.board.cells[0][1], 3)
 		self.add_note(self.board.cells[0][1], 2)
-		self.add_note(self.board.cells[0][1], 6)
+		self.add_note(self.board.cells[0][1], 1)
 		
 		pygame.display.update()
 
@@ -55,6 +56,7 @@ class Game:
 		self.selectedr = r
 		self.selectedc = c
 		cell = self.board.cells[r][c]
+		self.selected_cell = cell
 		cell.color = (215, 215, 215)
 		surfaces.append(self.graphics.update_cell(cell))
 		return surfaces
@@ -68,6 +70,7 @@ class Game:
 			surface = self.graphics.update_cell(cell)
 		self.selectedr = None
 		self.selectedc = None
+		self.selected_cell = None
 		return surface
 
 
@@ -104,6 +107,7 @@ class Game:
 		exit = False
 		while not exit:
 			rects = []
+
 			# event loop
 			for event in pygame.event.get():
 
@@ -142,12 +146,22 @@ class Game:
 
 				# insert/delete number
 				if event.type == pygame.KEYDOWN and event.key in self.keys and self.keys[event.key] <= self.size:
-					if self.board.cells[self.selectedr][self.selectedc].inserted != self.keys[event.key]:
-						rects.append(self.insert_num(self.keys[event.key], self.board.cells[self.selectedr][self.selectedc]))
+					num = self.keys[event.key]
+					if pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]:
+
+						if num in self.selected_cell.notes:
+							pass
+						else:
+							rects.append(self.add_note(self.selected_cell, num))
+
 					else:
-						rects.append(self.del_num(self.board.cells[self.selectedr][self.selectedc]))
+						if self.selected_cell.inserted != num:
+							rects.append(self.insert_num(num, self.selected_cell))
+						else:
+							rects.append(self.del_num(self.selected_cell))
+
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_BACKSPACE:
-					rects.append(self.del_num(self.board.cells[self.selectedr][self.selectedc]))
+					rects.append(self.del_num(self.selected_cell))
 
 			self.clock.tick(40)
 
