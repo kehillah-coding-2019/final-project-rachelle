@@ -38,11 +38,6 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
-
-		self.add_note(self.board.cells[0][1], 5)
-		self.add_note(self.board.cells[0][1], 3)
-		self.add_note(self.board.cells[0][1], 2)
-		self.add_note(self.board.cells[0][1], 1)
 		
 		pygame.display.update()
 
@@ -95,7 +90,8 @@ class Game:
 
 	def del_note(self, cell, num):
 		""" delete a note """
-		pass
+		cell.notes.remove(num)
+		return self.graphics.update_cell(cell)
 
 	def clear_notes(self, cell, num):
 		""" clear a note """
@@ -150,7 +146,7 @@ class Game:
 					if pygame.key.get_pressed()[pygame.K_LSHIFT] or pygame.key.get_pressed()[pygame.K_RSHIFT]:
 
 						if num in self.selected_cell.notes:
-							pass
+							rects.append(self.del_note(self.selected_cell, num))
 						else:
 							rects.append(self.add_note(self.selected_cell, num))
 
