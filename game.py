@@ -7,6 +7,37 @@ class InvalidDimensions(Exception):
 	pass
 
 
+class Button:
+	pass
+
+	def __init__(self, text, func, activated=True):
+		pass
+
+	def draw(self, x, y):
+		""" draws button on screen """
+		pass
+
+	def hover(self):
+		""" changes button when hovering """
+		pass
+
+	def unhover(self):
+		""" changes button when not hovering """
+		pass
+
+	def press(self):
+		""" does function and changes button """
+		pass
+
+	def deactivate(self):
+		""" deactivate button """
+		pass
+
+	def activate(self):
+		""" activate button """
+		pass
+
+
 class Game:
 
 	def __init__(self, pixels, size):
@@ -24,6 +55,11 @@ class Game:
 		self.selectedc = None
 		self.selected_cell = None
 
+		self.buttons = [Button('check', self.check, False), Button('reveal', self.reveal, False), Button('solve', self.solve, False), Button('reset', self.reset, False), Button('new', self.new, False)]
+		proportion = self.pixels/(len(self.buttons)*1.5)
+		self.button_height = 1*proportion
+		self.button_width = 2*proportion
+
 		self.keys = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
 
 		self.clock = pygame.time.Clock()
@@ -38,7 +74,7 @@ class Game:
 		self.graphics.make_board(self.board)
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
-		
+
 		pygame.display.update()
 
 	def select(self, r, c):
@@ -98,6 +134,25 @@ class Game:
 		cell.notes = []
 		return self.graphics.update_cell(cell)
 
+	def check(self):
+		""" check to see if the answer is right """
+		pass
+
+	def reveal(self):
+		""" reveal selected cell """
+		pass
+
+	def solve(self):
+		""" show the solution """
+		pass
+
+	def reset(self):
+		""" reset the puzzle """
+		pass
+
+	def new(self):
+		""" start a new puzzle """
+		pass
 
 	def game_loop(self):
 		""" goes through each event and does stuff """
@@ -162,7 +217,6 @@ class Game:
 						rects.append(self.clear_notes(self.selected_cell))
 					else:
 						rects.append(self.del_num(self.selected_cell))
-					print(self.selected_cell.notes)
 
 			self.clock.tick(40)
 

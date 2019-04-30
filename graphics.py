@@ -12,8 +12,9 @@ class Graphics:
 
 		self.cell_size = int(self.pixels/(self.size+1))
 		self.label_size = int(self.cell_size/3.8)
-		self.num_size = int(self.cell_size/1.2)
+		self.num_size = int(self.cell_size/1.6)
 		self.note_size = int(self.cell_size/7)
+		self.right_border = self.cell_size
 
 		self.font = pygame.font.get_default_font()
 
@@ -22,7 +23,7 @@ class Graphics:
 		self.images = self.get_images()
 		self.numbers = self.get_numText()
 
-		self.surface = pygame.display.set_mode((self.pixels, self.pixels))
+		self.surface = pygame.display.set_mode((self.pixels+self.right_border, self.pixels))
 		pygame.display.set_caption('Ken Ken')
 
 
