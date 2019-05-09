@@ -193,3 +193,7 @@ class Graphics:
 			thefont.set_italic(True)
 		return thefont.render(text, True, (0, 0, 0))
 
+	def draw_button(self, button):
+		""" draw the button """
+		rect = pygame.draw.rect(self.surface, button.color, pygame.Rect(button.x, button.y, button.width, button.height))
+

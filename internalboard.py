@@ -182,7 +182,7 @@ def groupGrid(number_grid):
 
 
 def groupKey(by_num, operations):
-	""" figure out arithetic solutions """
+	""" figure out arithmetic solutions """
 
 	gk = []
 

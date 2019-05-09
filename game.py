@@ -11,11 +11,21 @@ class Button:
 	pass
 
 	def __init__(self, text, func, activated=True):
-		pass
 
-	def draw(self, x, y):
+		self.text = text
+		self.func = func
+		self.state = activated
+
+		self.x = 0
+		self.y = 0
+		self.height = 0
+		self.width = 0
+
+		self.color = (215, 215, 215)
+
+	def draw(self, graphics):
 		""" draws button on screen """
-		pass
+		graphics.draw_button(self)
 
 	def hover(self):
 		""" changes button when hovering """
@@ -56,9 +66,12 @@ class Game:
 		self.selected_cell = None
 
 		self.buttons = [Button('check', self.check, False), Button('reveal', self.reveal, False), Button('solve', self.solve, False), Button('reset', self.reset, False), Button('new', self.new, False)]
-		proportion = self.pixels/(len(self.buttons)*1.5)
+		proportion = (self.size*self.graphics.cell_size)/(len(self.buttons)*1.5) 
 		self.button_height = 1*proportion
 		self.button_width = 2*proportion
+		print(self.button_height)
+		
+		self.add_buttons()
 
 		self.keys = {pygame.K_1: 1, pygame.K_2: 2, pygame.K_3: 3, pygame.K_4: 4, pygame.K_5: 5, pygame.K_6: 6, pygame.K_7: 7, pygame.K_8: 8, pygame.K_9: 9}
 
@@ -75,7 +88,23 @@ class Game:
 		self.graphics.setup_corner_text(self.board)
 		self.select(0, 0)
 
+		for button in self.buttons:
+			button.draw(self.graphics)
+
 		pygame.display.update()
+
+	def add_buttons(self):
+		""" adds buttons """
+		border = self.graphics.cell_size/2
+		puzzle_size = self.graphics.cell_size*self.size
+		buttons_space = len(self.buttons)*self.button_height
+		for i in range(len(self.buttons)):
+			button = self.buttons[i]
+			button.x = self.pixels-(self.graphics.cell_size/2) + (self.graphics.cell_size/10)
+			print(puzzle_size - buttons_space)
+			button.y = border + (i*(self.button_height + (puzzle_size - buttons_space)/(len(self.buttons)-1)))
+			button.width = self.button_width
+			button.height = self.button_height
 
 	def select(self, r, c):
 		""" select """
