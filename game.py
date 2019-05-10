@@ -52,7 +52,7 @@ class Game:
 
 	def __init__(self, pixels, size):
 
-		if size > 9:
+		if size < 4 or size > 9:
 			raise InvalidDimensions
 
 		self.pixels = pixels
@@ -66,9 +66,8 @@ class Game:
 		self.selected_cell = None
 
 		self.buttons = [Button('check', self.check, False), Button('reveal', self.reveal, False), Button('solve', self.solve, False), Button('reset', self.reset, False), Button('new', self.new, False)]
-		proportion = (self.size*self.graphics.cell_size)/(len(self.buttons)*1.5) 
-		self.button_height = 1*proportion
-		self.button_width = 2*proportion
+		self.button_width = (self.graphics.cell_size * 1.5) - self.graphics.cell_size/4
+		self.button_height = self.button_width/2
 		print(self.button_height)
 		
 		self.add_buttons()
@@ -101,8 +100,7 @@ class Game:
 		for i in range(len(self.buttons)):
 			button = self.buttons[i]
 			button.x = self.pixels-(self.graphics.cell_size/2) + (self.graphics.cell_size/10)
-			print(puzzle_size - buttons_space)
-			button.y = border + (i*(self.button_height + (puzzle_size - buttons_space)/(len(self.buttons)-1)))
+			button.y = border + (i*(self.button_height + (self.button_height/6)))
 			button.width = self.button_width
 			button.height = self.button_height
 
