@@ -10,18 +10,17 @@ class InvalidDimensions(Exception):
 class Button:
 	pass
 
-	def __init__(self, text, func, activated=True):
+	def __init__(self, text, func, color=True):
 
 		self.text = text
 		self.func = func
-		self.state = activated
+		self.color = color
 
 		self.x = 0
 		self.y = 0
 		self.height = 0
 		self.width = 0
 
-		self.color = (215, 215, 215)
 
 	def draw(self, graphics):
 		""" draws button on screen """
@@ -29,7 +28,7 @@ class Button:
 
 	def hover(self):
 		""" changes button when hovering """
-		pass
+		self.color = (2)
 
 	def unhover(self):
 		""" changes button when not hovering """
@@ -65,7 +64,7 @@ class Game:
 		self.selectedc = None
 		self.selected_cell = None
 
-		self.buttons = [Button('check', self.check, False), Button('reveal', self.reveal, False), Button('solve', self.solve, False), Button('reset', self.reset, False), Button('new', self.new, False)]
+		self.buttons = [Button('Check', self.check, (215, 215, 215)), Button('Reveal', self.reveal, (215, 215, 215)), Button('Solve', self.solve, (215, 215, 215)), Button('Reset', self.reset, (215, 215, 215)), Button('New', self.new, (215, 215, 215))]
 		self.button_width = (self.graphics.cell_size * 1.5) - self.graphics.cell_size/4
 		self.button_height = self.button_width/2
 		print(self.button_height)

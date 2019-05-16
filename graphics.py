@@ -19,6 +19,7 @@ class Graphics:
 		self.font = pygame.font.get_default_font()
 
 		self.note_font = 'helvetica.ttc'
+		self.button_font = 'Arial Black copy.ttf'
 
 		self.images = self.get_images()
 		self.numbers = self.get_numText()
@@ -196,4 +197,6 @@ class Graphics:
 	def draw_button(self, button):
 		""" draw the button """
 		rect = pygame.draw.rect(self.surface, button.color, pygame.Rect(button.x, button.y, button.width, button.height))
+		self.insert_text(self.text(self.button_font, int(button.height/2), button.text), (button.x + button.width/20, button.y + (button.height/10)))
+		return rect
 
