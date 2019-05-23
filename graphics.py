@@ -196,7 +196,7 @@ class Graphics:
 
 	def draw_button(self, button):
 		""" draw the button """
-		rect = pygame.draw.rect(self.surface, button.color, pygame.Rect(button.x, button.y, button.width, button.height))
+		rect = pygame.draw.rect(self.surface, button.color, button.rect)
 		self.insert_text(self.text(self.button_font, int(button.height/2), button.text), (button.x + button.width/20, button.y + (button.height/10)))
 		return rect
 

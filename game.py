@@ -10,41 +10,50 @@ class InvalidDimensions(Exception):
 class Button:
 	pass
 
-	def __init__(self, text, func, color=True):
+	def __init__(self, text, func, graphics, state):
 
 		self.text = text
 		self.func = func
-		self.color = color
+		self.graphics = graphics
+
+		self.states = {'up': (215, 215, 215), 'hover': (200, 200, 200), 'down': ((170, 170, 170))}
+		self.set_state(state)
 
 		self.x = 0
 		self.y = 0
 		self.height = 0
 		self.width = 0
+		self.rect = None
 
 
-	def draw(self, graphics):
+	def set_state(self, state):
+		""" changes the state"""
+		self.state = state
+		self.color = self.states[self.state]
+
+	def draw(self):
 		""" draws button on screen """
-		graphics.draw_button(self)
+		return self.graphics.draw_button(self)
 
 	def hover(self):
 		""" changes button when hovering """
-		self.color = (2)
+		self.set_state('hover')
+		return self.draw()
 
 	def unhover(self):
 		""" changes button when not hovering """
-		pass
+		self.set_state('up')
+		return self.draw()
 
 	def press(self):
 		""" does function and changes button """
-		pass
+		self.set_state('down')
+		return self.draw()
 
-	def deactivate(self):
-		""" deactivate button """
-		pass
-
-	def activate(self):
-		""" activate button """
-		pass
+	def unpress(self):
+		""" changes button when unpress """
+		self.set_state('up')
+		return self.draw()
 
 
 class Game:
@@ -64,7 +73,7 @@ class Game:
 		self.selectedc = None
 		self.selected_cell = None
 
-		self.buttons = [Button('Check', self.check, (215, 215, 215)), Button('Reveal', self.reveal, (215, 215, 215)), Button('Solve', self.solve, (215, 215, 215)), Button('Reset', self.reset, (215, 215, 215)), Button('New', self.new, (215, 215, 215))]
+		self.buttons = [Button('Check', self.check, self.graphics, 'up'), Button('Reveal', self.reveal, self.graphics, 'up'), Button('Solve', self.solve, self.graphics, 'up'), Button('Reset', self.reset, self.graphics, 'up'), Button('New', self.new, self.graphics, 'up')]
 		self.button_width = (self.graphics.cell_size * 1.5) - self.graphics.cell_size/4
 		self.button_height = self.button_width/2
 		print(self.button_height)
@@ -87,7 +96,7 @@ class Game:
 		self.select(0, 0)
 
 		for button in self.buttons:
-			button.draw(self.graphics)
+			button.draw()
 
 		pygame.display.update()
 
@@ -102,6 +111,7 @@ class Game:
 			button.y = border + (i*(self.button_height + (self.button_height/6)))
 			button.width = self.button_width
 			button.height = self.button_height
+			button.rect = pygame.Rect(button.x, button.y, button.width, button.height)
 
 	def select(self, r, c):
 		""" select """
@@ -210,8 +220,10 @@ class Game:
 						if self.selectedr+1 < self.size:
 							rects.extend(self.select(self.selectedr+1, self.selectedc))
 
-				# clicking to select
+				# clicking
 				if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+
+					# selecting cells
 					done = False
 					for r in range(self.size):
 						for c in range(self.size):
@@ -219,6 +231,14 @@ class Game:
 								done = True
 								rects.extend(self.select(r, c))
 								break
+
+					# pressing buttons
+					for button in self.buttons:
+						if button.rect.collidepoint(event.pos):
+							done = True
+							rects.append(button.press())
+							break
+
 					if not done:
 						rects.append(self.unselect())
 
@@ -243,6 +263,24 @@ class Game:
 						rects.append(self.clear_notes(self.selected_cell))
 					else:
 						rects.append(self.del_num(self.selected_cell))
+
+
+				# buttons
+
+				# button hovering
+				if event.type == pygame.MOUSEMOTION and not pygame.mouse.get_pressed()[0]:
+					for button in self.buttons:
+						if button.rect.collidepoint(event.pos):
+							rects.append(button.hover())
+						else:
+							rects.append(button.unhover())
+
+				# button unpress
+				if event.type == pygame.MOUSEBUTTONUP:
+					for button in self.buttons:
+						if button.rect.collidepoint(event.pos):
+							rects.append(button.unpress())
+
 
 			self.clock.tick(40)
 
